@@ -43,7 +43,7 @@ import boto3
 #from sagemaker.serializers import IdentitySerializer
 
 # Fill this in with the name of your deployed model
-ENDPOINT = "image-classification-2023-01-20-16-58-14-623"
+ENDPOINT = "image-classification-2023-01-29-16-15-34-508"
 runtime= boto3.client('runtime.sagemaker')
 
 def lambda_handler(event, context):
@@ -63,10 +63,10 @@ def lambda_handler(event, context):
     #inferences = predictor.predict(payload)
     
     # We return the data back to the Step Function    
-    event["inferences"] = json.loads(predictor['Body'].read().decode('utf-8'))
+    event["inferences"] = predictor['Body'].read().decode('utf-8')
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': event
     }
 
 """
@@ -79,7 +79,7 @@ THRESHOLD = .85
 
 def lambda_handler(event, context):
     # Get the inferences from the event
-    inferences = event["inferences"]
+    inferences = json.loads(event["inferences"])
     
     # Check if any values in any inferences are above THRESHOLD
     meets_threshold = (max(inferences) > THRESHOLD)
@@ -93,5 +93,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': event
     }
