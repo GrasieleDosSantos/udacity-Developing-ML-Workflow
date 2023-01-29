@@ -79,7 +79,7 @@ THRESHOLD = .85
 
 def lambda_handler(event, context):
     # Get the inferences from the event
-    inferences = json.loads(event["inferences"])
+    inferences = event["inferences"]
     
     # Check if any values in any inferences are above THRESHOLD
     meets_threshold = (max(inferences) > THRESHOLD)
