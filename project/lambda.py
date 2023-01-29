@@ -63,7 +63,7 @@ def lambda_handler(event, context):
     #inferences = predictor.predict(payload)
     
     # We return the data back to the Step Function    
-    event["inferences"] = predictor['Body'].read().decode('utf-8')
+    event["inferences"] = json.loads(predictor['Body'].read().decode('utf-8'))
     return {
         'statusCode': 200,
         'body': event
